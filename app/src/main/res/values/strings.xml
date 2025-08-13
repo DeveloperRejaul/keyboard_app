@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">keyboard_app</string>
+    <string name="subtype_en">English</string>
+    <string name="subtype_bn">বাংলা</string>
+</resources>
