@@ -6,15 +6,22 @@ import android.view.inputmethod.EditorInfo
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.setViewTreeLifecycleOwner
+import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 
-class ComposeImeService : InputMethodService(), LifecycleOwner, SavedStateRegistryOwner {
+class ComposeImeService : InputMethodService(),
+    LifecycleOwner,
+    SavedStateRegistryOwner,
+    ViewModelStoreOwner {
 
     private var lifecycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
+    override val viewModelStore = ViewModelStore()
 
     override val lifecycle: Lifecycle
         get() = lifecycleRegistry
@@ -24,10 +31,13 @@ class ComposeImeService : InputMethodService(), LifecycleOwner, SavedStateRegist
     override val savedStateRegistry: SavedStateRegistry
         get() = savedStateRegistryController.savedStateRegistry
 
+
+
     override fun onCreateInputView(): View {
         window?.window?.decorView?.let { decorView ->
             decorView.setViewTreeLifecycleOwner(this)
             decorView.setViewTreeSavedStateRegistryOwner(this)
+            decorView.setViewTreeViewModelStoreOwner(this)
         }
         return ComposeKeyBoardView(this)
     }
