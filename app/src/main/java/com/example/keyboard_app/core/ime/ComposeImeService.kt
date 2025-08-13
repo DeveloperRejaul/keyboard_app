@@ -3,7 +3,6 @@ package com.example.keyboard_app.core.ime
 import android.inputmethodservice.InputMethodService
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputConnection
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
@@ -54,6 +53,5 @@ class ComposeImeService : InputMethodService(), LifecycleOwner, SavedStateRegist
         handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     }
 
-    private fun handleLifecycleEvent(event: Lifecycle.Event) =
-        lifecycleRegistry.handleLifecycleEvent(event)
+    private fun handleLifecycleEvent(event: Lifecycle.Event) = lifecycleRegistry.handleLifecycleEvent(event)
 }
