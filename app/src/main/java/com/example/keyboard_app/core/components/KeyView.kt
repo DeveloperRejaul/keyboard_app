@@ -14,21 +14,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.keyboard_app.core.constance.ScreenSize
 
 @Composable
 fun KeyView(
-    label: String,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit ?= {}
+    label: String ?= null,
+    onClick: () -> Unit ?= {},
+    content: (@Composable (() -> Unit))?=null,
 ) {
     Box(
         modifier = modifier
             .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(3.dp))
-            .clickable { onClick() }
-            .height(40.dp).width(28.dp),
+            .clickable {
+                onClick()
+            }
+            .height(40.dp).width(ScreenSize.width()/10 - 8.dp),
         contentAlignment = Alignment.Center
     ) {
-        Text(label, style = TextStyle(
+       if(content != null) {
+           content()
+       } else if (label != null) Text(label, style = TextStyle(
             fontSize = 18.sp
         ))
     }

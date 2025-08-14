@@ -15,7 +15,6 @@ class KeyboardViewModal: ViewModel() {
     val isCapital: StateFlow<Boolean> = _isCapital
 
 
-
     fun toggleKeyCapital() {
         _isCapital.value = !_isCapital.value
     }
