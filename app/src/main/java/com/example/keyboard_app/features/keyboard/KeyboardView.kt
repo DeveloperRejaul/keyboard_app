@@ -9,10 +9,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -24,40 +23,38 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.keyboard_app.core.components.KeyView
 import com.example.keyboard_app.core.ime.ComposeImeService
 import com.example.keyboard_app.R
-import java.util.Locale
+import com.example.keyboard_app.core.constance.KeyViewType
+import com.example.keyboard_app.core.constance.Size
 
 
 @Composable
 fun KeyboardView(keyboardViewModal: KeyboardViewModal = viewModel()) {
-    val isCapital = keyboardViewModal.isCapital.collectAsState()
     val context = LocalContext.current
     val ime = context as? ComposeImeService
 
+    val row1 = keyboardViewModal.row2.collectAsState()
+    val prvKeyViewType = keyboardViewModal.prvKeyViewType.collectAsState()
+    val crrKeyViewType = keyboardViewModal.crrKeyViewType.collectAsState()
+    val row2 = keyboardViewModal.row3.collectAsState()
+    val row3 = keyboardViewModal.row4.collectAsState()
 
 
-    val row1 = listOf("a",'b','c','d','e', 'f','g','h','i', 'j');
-    val row2 = listOf("k",'l','m','n','o', 'p','q','r','s');
-    val row3 = listOf("t",'u','v','w','x', 'y','z');
-
-
-    Box(modifier = Modifier.height(300.dp).fillMaxWidth().background(MaterialTheme.colorScheme.primary)) {
-        Column (
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 1.dp, vertical = 4.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
+    Box(modifier = Modifier
+        .height(Size.keyboardHeight)
+        .fillMaxWidth()
+        .background(MaterialTheme.colorScheme.primary)) {
+        Column ( modifier = Modifier.fillMaxWidth() .padding(Size.keyboardHorizontalPadding, Size.keyboardVerticalPadding),verticalArrangement = Arrangement.spacedBy(Size.keyboardRowGap)) {
             // ROW 01
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+                horizontalArrangement = Arrangement.spacedBy(Size.keyGap, Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically
             ){
-                row1.forEach {
+                row1.value.forEachIndexed { index, value ->
                     KeyView(
-                        label = if(isCapital.value) it.toString().uppercase(Locale.getDefault()) else it.toString()  ,
+                        label = row1.value[index],
                         onClick = {
-                            keyboardViewModal.type(ime , it.toString())
+                            keyboardViewModal.type(ime , row1.value[index])
                         }
                     )
                 }
@@ -66,13 +63,13 @@ fun KeyboardView(keyboardViewModal: KeyboardViewModal = viewModel()) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+                horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
             ){
-                row2.forEach {
+                row2.value.forEachIndexed { index, value ->
                     KeyView(
-                        label = if(isCapital.value) it.toString().uppercase(Locale.getDefault()) else it.toString()  ,
+                        label = row2.value[index] ,
                         onClick = {
-                            keyboardViewModal.type(ime , it.toString())
+                            keyboardViewModal.type(ime , row2.value[index])
                         }
                     )
                 }
@@ -80,49 +77,134 @@ fun KeyboardView(keyboardViewModal: KeyboardViewModal = viewModel()) {
             // ROW 03
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+                horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically
             ){
-                IconButton(
+                KeyView(
                     onClick = {
-                        keyboardViewModal.toggleKeyCapital()
+                        keyboardViewModal.arrowKey()
                     },
-                    modifier = Modifier
-                        .background(
-                            MaterialTheme.colorScheme.surfaceVariant,
-                            RoundedCornerShape(3.dp)
-                        )
-                        .height(40.dp)
+                    modifier = Modifier.weight(1f)
                 ){
-                    Icon(
-                        painter = painterResource(id = if(isCapital.value) R.drawable.arrow_up else R.drawable.arrow_up_outline),
-                        contentDescription = "Enter Key",
-                        modifier = Modifier.size(27.dp)
-                    )
+                    when(crrKeyViewType.value){
+                        KeyViewType.ENGLISH_LOAR -> {
+                            Icon(
+                                painter = painterResource(id = R.drawable.arrow_up_outline),
+                                contentDescription = "Uppercase and Lowercase ",
+                                modifier = Modifier.size(27.dp)
+                            )
+                        }
+                        KeyViewType.ENGLISH_UPPER -> {
+                            Icon(
+                                painter = painterResource(id = R.drawable.arrow_up),
+                                contentDescription = "Uppercase and Lowercase ",
+                                modifier = Modifier.size(27.dp)
+                            )
+                        }
+                        KeyViewType.ENGLISH_NUMBER_AND_SEMBLE -> {
+                            Text("=\\<")
+                        }
+                        KeyViewType.ENGLISH_SEMBLE -> {
+                            Text("?123")
+                        }
+
+                        else -> Unit
+                    }
+
                 }
-                row3.forEach {
+                row3.value.forEachIndexed { index, value ->
                     KeyView(
-                        label = if(isCapital.value) it.toString().uppercase(Locale.getDefault()) else it.toString() ,
+                        label = row3.value[index],
                         onClick = {
-                            keyboardViewModal.type(ime , it.toString())
+                            keyboardViewModal.type(ime , row3.value[index])
                         }
                     )
                 }
 
-                IconButton(
+                KeyView(
                     onClick = {
                         keyboardViewModal.remove(ime)
                     },
-                    modifier = Modifier
-                        .background(
-                            MaterialTheme.colorScheme.surfaceVariant,
-                            RoundedCornerShape(3.dp)
-                        )
-                        .height(40.dp)
+                    onPressInterval = {
+                        keyboardViewModal.remove(ime)
+                    },
+                    modifier = Modifier.weight(1f)
                 ){
                     Icon(
                         painter = painterResource(id = R.drawable.delete),
                         contentDescription = "Remove Key",
+                        modifier = Modifier.size(27.dp)
+                    )
+                }
+            }
+
+            // ROW 04
+            Row (
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                KeyView(
+                    onClick = {
+                        keyboardViewModal.numKey()
+                    },
+                    modifier = Modifier.weight(1f)
+                ){
+                    if(crrKeyViewType.value == KeyViewType.ENGLISH_UPPER || crrKeyViewType.value == KeyViewType.ENGLISH_LOAR) {
+                        Text("?123")
+                    }else {
+                        when(prvKeyViewType.value) {
+                            KeyViewType.ENGLISH_UPPER -> {
+                                Text("ABC")
+                            }
+                            KeyViewType.ENGLISH_LOAR -> {
+                                Text("abc")
+                            }
+                            else -> Unit
+                        }
+                    }
+                }
+                KeyView(
+                    label = "H",
+                    onClick = {
+                        keyboardViewModal.type(ime , "H")
+                    }
+                )
+                KeyView(
+                    label = "H",
+                    onClick = {
+                        keyboardViewModal.type(ime , "H")
+                    }
+                )
+
+                KeyView(
+                    label = "Space",
+                    onClick = {
+                        keyboardViewModal.type(ime , " ")
+                    },
+                    width = Size.SpaceKeyWidth()
+                )
+                KeyView(
+                    label = "H",
+                    onClick = {
+                        keyboardViewModal.type(ime , "H")
+                    },
+                    onLongPress = {
+                        keyboardViewModal.type(ime , "ksajofaso")
+                    }
+                )
+                KeyView(
+                    onClick = {
+                        keyboardViewModal.enter(ime)
+                    },
+                    onPressInterval = {
+                        keyboardViewModal.enter(ime)
+                    },
+                    modifier = Modifier.weight(1f)
+                ){
+                    Icon(
+                        painter = painterResource(id = R.drawable.enter),
+                        contentDescription = "enter Key",
                         modifier = Modifier.size(27.dp)
                     )
                 }
