@@ -12,6 +12,7 @@ import android.view.HapticFeedbackConstants
 import android.view.View
 import com.example.keyboard_app.core.constance.KeyViewType
 import com.example.keyboard_app.core.constance.Keys
+import com.example.keyboard_app.core.constance.Language
 
 class KeyboardViewModal: ViewModel() {
     private val _crrKeyViewType = MutableStateFlow<KeyViewType>(KeyViewType.ENGLISH_LOAR)
@@ -51,10 +52,23 @@ class KeyboardViewModal: ViewModel() {
             }
             KeyViewType.ENGLISH_NUMBER_AND_SEMBLE ->setEnglishSymbols()
             KeyViewType.ENGLISH_SEMBLE -> setEnglishNumberSymbols()
+            KeyViewType.BANGLA_SCREEN_1 -> setBanglaScreen2()
+            KeyViewType.BANGLA_SCREEN_2 -> setBanglaScreen1()
+            KeyViewType.BANGLA_NUMBER_AND_SEMBLE -> setBanglaSymbols()
+            KeyViewType.BANGLA_SEMBLE -> setBanglaNumberAndSymbols()
             else -> Unit
         }
     }
 
+    fun toggleEnBn (len: Language){
+            when(len) {
+                Language.BN -> setBanglaScreen1()
+                Language.EN -> {
+                    _crrKeyViewType.value = KeyViewType.ENGLISH_LOAR
+                    setEnglish(false)
+                }
+            }
+    }
 
 
     fun numKey() {
@@ -68,8 +82,16 @@ class KeyboardViewModal: ViewModel() {
                 _prvKeyViewType.value = KeyViewType.ENGLISH_UPPER
             }
 
+            KeyViewType.BANGLA_SCREEN_1 -> {
+                setBanglaNumberAndSymbols()
+                _prvKeyViewType.value = KeyViewType.BANGLA_SCREEN_1
+            }
+            KeyViewType.BANGLA_SCREEN_2 -> {
+                setBanglaNumberAndSymbols()
+                _prvKeyViewType.value = KeyViewType.BANGLA_SCREEN_2
+            }
 
-            KeyViewType.ENGLISH_NUMBER_AND_SEMBLE,KeyViewType.ENGLISH_SEMBLE  -> {
+            KeyViewType.ENGLISH_NUMBER_AND_SEMBLE,KeyViewType.ENGLISH_SEMBLE, KeyViewType.BANGLA_SEMBLE, KeyViewType.BANGLA_NUMBER_AND_SEMBLE  -> {
                 when (_prvKeyViewType.value) {
                     KeyViewType.ENGLISH_LOAR -> {
                         setEnglish(false)
@@ -80,6 +102,14 @@ class KeyboardViewModal: ViewModel() {
                         setEnglish(true)
                         _prvKeyViewType.value = KeyViewType.ENGLISH_NUMBER_AND_SEMBLE
                         _crrKeyViewType.value = KeyViewType.ENGLISH_UPPER
+                    }
+                    KeyViewType.BANGLA_SCREEN_1 -> {
+                      setBanglaScreen1()
+                        _prvKeyViewType.value = KeyViewType.BANGLA_NUMBER_AND_SEMBLE
+                    }
+                    KeyViewType.BANGLA_SCREEN_2 -> {
+                        setBanglaScreen2()
+                        _prvKeyViewType.value = KeyViewType.BANGLA_NUMBER_AND_SEMBLE
                     }
                     else -> Unit
                 }
@@ -138,11 +168,36 @@ class KeyboardViewModal: ViewModel() {
         _row4.value = Keys.symbols.slice(37..43)
         _crrKeyViewType.value = KeyViewType.ENGLISH_SEMBLE
     }
-
     private fun setEnglish(isUpper: Boolean) {
         _row2.value = if (isUpper) Keys.engUpper.slice(0..9) else Keys.eng.slice(0..9)
         _row3.value = if (isUpper) Keys.engUpper.slice(10..18) else Keys.eng.slice(10..18)
         _row4.value = if (isUpper) Keys.engUpper.slice(19..25) else Keys.eng.slice(19..25)
+    }
+
+    private fun setBanglaScreen1() {
+        _crrKeyViewType.value = KeyViewType.BANGLA_SCREEN_1
+        _row2.value = Keys.bn.slice(0..9)
+        _row3.value = Keys.bn.slice(10..18)
+        _row4.value = Keys.bn.slice(19..25)
+    }
+    private fun setBanglaScreen2() {
+        _crrKeyViewType.value = KeyViewType.BANGLA_SCREEN_2
+        _row2.value = Keys.bn.slice(25..34)
+        _row3.value = Keys.bnIndependent.slice(0..8)
+        _row4.value = Keys.bn.slice(4..10)
+    }
+
+    private fun  setBanglaNumberAndSymbols () {
+        _row2.value = Keys.bnNumbers.slice(0..9)
+        _row3.value = Keys.symbols.slice(27..36)
+        _row4.value = Keys.symbols.slice(37..43)
+        _crrKeyViewType.value = KeyViewType.BANGLA_NUMBER_AND_SEMBLE
+    }
+    private fun  setBanglaSymbols () {
+        _row2.value = Keys.bnDependent.slice(0..9)
+        _row3.value = Keys.symbols.slice(27..36)
+        _row4.value = Keys.symbols.slice(37..43)
+        _crrKeyViewType.value = KeyViewType.BANGLA_SEMBLE
     }
 
 }

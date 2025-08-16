@@ -24,6 +24,7 @@ import com.example.keyboard_app.core.components.KeyView
 import com.example.keyboard_app.core.ime.ComposeImeService
 import com.example.keyboard_app.R
 import com.example.keyboard_app.core.constance.KeyViewType
+import com.example.keyboard_app.core.constance.Language
 import com.example.keyboard_app.core.constance.Size
 
 
@@ -87,24 +88,24 @@ fun KeyboardView(keyboardViewModal: KeyboardViewModal = viewModel()) {
                     modifier = Modifier.weight(1f)
                 ){
                     when(crrKeyViewType.value){
-                        KeyViewType.ENGLISH_LOAR -> {
+                        KeyViewType.ENGLISH_LOAR, KeyViewType.BANGLA_SCREEN_1 -> {
                             Icon(
                                 painter = painterResource(id = R.drawable.arrow_up_outline),
                                 contentDescription = "Uppercase and Lowercase ",
                                 modifier = Modifier.size(27.dp)
                             )
                         }
-                        KeyViewType.ENGLISH_UPPER -> {
+                        KeyViewType.ENGLISH_UPPER,KeyViewType.BANGLA_SCREEN_2 -> {
                             Icon(
                                 painter = painterResource(id = R.drawable.arrow_up),
                                 contentDescription = "Uppercase and Lowercase ",
                                 modifier = Modifier.size(27.dp)
                             )
                         }
-                        KeyViewType.ENGLISH_NUMBER_AND_SEMBLE -> {
+                        KeyViewType.ENGLISH_NUMBER_AND_SEMBLE, KeyViewType.BANGLA_NUMBER_AND_SEMBLE -> {
                             Text("=\\<")
                         }
-                        KeyViewType.ENGLISH_SEMBLE -> {
+                        KeyViewType.ENGLISH_SEMBLE , KeyViewType.BANGLA_SEMBLE-> {
                             Text("?123")
                         }
 
@@ -152,28 +153,42 @@ fun KeyboardView(keyboardViewModal: KeyboardViewModal = viewModel()) {
                 ){
                     if(crrKeyViewType.value == KeyViewType.ENGLISH_UPPER || crrKeyViewType.value == KeyViewType.ENGLISH_LOAR) {
                         Text("?123")
-                    }else {
-                        when(prvKeyViewType.value) {
-                            KeyViewType.ENGLISH_UPPER -> {
-                                Text("ABC")
-                            }
-                            KeyViewType.ENGLISH_LOAR -> {
-                                Text("abc")
-                            }
-                            else -> Unit
-                        }
+                        return@KeyView
                     }
+                    if(crrKeyViewType.value == KeyViewType.BANGLA_SCREEN_1 || crrKeyViewType.value == KeyViewType.BANGLA_SCREEN_2){
+                        Text("?১২৩")
+                        return@KeyView
+                    }
+                    when(prvKeyViewType.value) {
+                        KeyViewType.ENGLISH_UPPER -> {
+                            Text("ABC")
+                        }
+                        KeyViewType.ENGLISH_LOAR -> {
+                            Text("abc")
+                        }
+                        KeyViewType.BANGLA_SCREEN_1 -> {
+                            Text("bn1")
+                        }
+                        KeyViewType.BANGLA_SCREEN_2 -> {
+                            Text("bn2")
+                        }
+                        else -> Unit
+                    }
+
                 }
                 KeyView(
-                    label = "H",
-                    onClick = {
-                        keyboardViewModal.type(ime , "H")
-                    }
-                )
+                    onClick = {},
+                ){
+                    Icon(
+                        painter = painterResource(id = R.drawable.emoji),
+                        contentDescription = "emoji",
+                        modifier = Modifier.size(27.dp)
+                    )
+                }
                 KeyView(
-                    label = "H",
+                    label = ",",
                     onClick = {
-                        keyboardViewModal.type(ime , "H")
+                        keyboardViewModal.type(ime , ",")
                     }
                 )
 
@@ -184,15 +199,26 @@ fun KeyboardView(keyboardViewModal: KeyboardViewModal = viewModel()) {
                     },
                     width = Size.SpaceKeyWidth()
                 )
-                KeyView(
-                    label = "H",
-                    onClick = {
-                        keyboardViewModal.type(ime , "H")
-                    },
-                    onLongPress = {
-                        keyboardViewModal.type(ime , "ksajofaso")
+
+                when(crrKeyViewType.value){
+                    KeyViewType.ENGLISH_LOAR, KeyViewType.ENGLISH_UPPER, KeyViewType.ENGLISH_SEMBLE, KeyViewType.ENGLISH_NUMBER_AND_SEMBLE -> {
+                        KeyView(
+                            label = "BN",
+                            onClick = {
+                                keyboardViewModal.toggleEnBn(Language.BN)
+                            },
+                        )
                     }
-                )
+                    KeyViewType.BANGLA_SEMBLE,KeyViewType.BANGLA_SCREEN_1,KeyViewType.BANGLA_SCREEN_2,KeyViewType.BANGLA_NUMBER_AND_SEMBLE -> {
+                        KeyView(
+                            label = "EN",
+                            onClick = {
+                                keyboardViewModal.toggleEnBn(Language.EN)
+                            },
+                        )
+                    }
+                }
+
                 KeyView(
                     onClick = {
                         keyboardViewModal.enter(ime)

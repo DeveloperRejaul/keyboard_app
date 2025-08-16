@@ -5,6 +5,13 @@ object Keys {
     val bnIndependent = listOf(
         "অ","আ","ই","ঈ","উ","ঊ","ঋ","এ","ঐ","ও","ঔ"
     )
+    val bnDependent = listOf(
+        "া","ি","ী","ু","ূ","ৃ","ে","ৈ","ো","ৌ"
+    )
+    // Common signs / symbols
+    val bnSigns = listOf(
+        "।",
+    )
 
     /** Bangla consonants */
     val bn = listOf(
@@ -13,11 +20,13 @@ object Keys {
         "ট","ঠ","ড","ঢ","ণ",
         "ত","থ","দ","ধ","ন",
         "প","ফ","ব","ভ","ম",
-        "য","র","ল","শ","ষ","স","হ",
-        "ড়","ঢ়","য়"
+        "য","র","ল","শ","ষ",
+        "স","হ","ড়","ঢ়","য়",
+        "ৎ","ং","ঃ","ঁ"
     )
 
     val eng = ('a'..'z').map { it.toString() }
+
     val engUpper = ('A'..'Z').map { it.toString() }
 
     /** Common symbols */
