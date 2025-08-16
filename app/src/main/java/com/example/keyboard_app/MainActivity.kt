@@ -39,11 +39,10 @@ class MainActivity : ComponentActivity() {
                             value = value,
                             onValueChange = { value = it }
                         )
-                        Text("Compose Keyboard", style = MaterialTheme.typography.headlineSmall)
-                        Text("Enable from: Settings → System → Languages & input → On‑screen keyboard → Manage keyboards → Compose Keyboard")
                         Button(onClick = {
                             context.startActivity(Intent(Settings.ACTION_INPUT_METHOD_SETTINGS))
-                        }) { Text("Open Keyboard Settings") }
+                        })
+                        { Text("Open Keyboard Settings") }
                     }
                 }
             }

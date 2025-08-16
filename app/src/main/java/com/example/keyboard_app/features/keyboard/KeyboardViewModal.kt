@@ -182,19 +182,19 @@ class KeyboardViewModal: ViewModel() {
     }
     private fun setBanglaScreen2() {
         _crrKeyViewType.value = KeyViewType.BANGLA_SCREEN_2
-        _row2.value = Keys.bn.slice(25..34)
-        _row3.value = Keys.bnIndependent.slice(0..8)
-        _row4.value = Keys.bn.slice(4..10)
+        _row2.value = Keys.bn.slice(26..35)
+        _row3.value = Keys.bn.slice(36..44)
+        _row4.value = Keys.bn.slice(45..51)
     }
 
     private fun  setBanglaNumberAndSymbols () {
         _row2.value = Keys.bnNumbers.slice(0..9)
-        _row3.value = Keys.symbols.slice(27..36)
-        _row4.value = Keys.symbols.slice(37..43)
+        _row3.value = Keys.bn.slice(52..60)
+        _row4.value = Keys.bn.slice(61..67)
         _crrKeyViewType.value = KeyViewType.BANGLA_NUMBER_AND_SEMBLE
     }
     private fun  setBanglaSymbols () {
-        _row2.value = Keys.bnDependent.slice(0..9)
+        _row2.value = Keys.symbols.slice(0..9)
         _row3.value = Keys.symbols.slice(27..36)
         _row4.value = Keys.symbols.slice(37..43)
         _crrKeyViewType.value = KeyViewType.BANGLA_SEMBLE

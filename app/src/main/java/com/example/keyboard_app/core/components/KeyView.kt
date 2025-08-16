@@ -72,6 +72,8 @@ fun KeyView(
                             if (onPressInterval != null) {
                                 while (isPressed) {
                                     onPressInterval()
+                                    keyboardViewModal.vibrate(view)
+                                    keyboardViewModal.sound(context)
                                     delay(100)
                                 }
                             }
@@ -92,7 +94,7 @@ fun KeyView(
        if(content != null) {
            content()
        } else if (label != null) Text(label, style = TextStyle(
-            fontSize = 18.sp
+            fontSize = 22.sp
         ))
     }
 }

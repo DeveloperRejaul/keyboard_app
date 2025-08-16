@@ -1,33 +1,14 @@
 package com.example.keyboard_app.core.constance
 object Keys {
-
-    /** Bangla independent vowels */
-    val bnIndependent = listOf(
-        "অ","আ","ই","ঈ","উ","ঊ","ঋ","এ","ঐ","ও","ঔ"
-    )
-    val bnDependent = listOf(
-        "া","ি","ী","ু","ূ","ৃ","ে","ৈ","ো","ৌ"
-    )
-    // Common signs / symbols
-    val bnSigns = listOf(
-        "।",
-    )
-
-    /** Bangla consonants */
     val bn = listOf(
-        "ক","খ","গ","ঘ","ঙ",
-        "চ","ছ","জ","ঝ","ঞ",
-        "ট","ঠ","ড","ঢ","ণ",
-        "ত","থ","দ","ধ","ন",
-        "প","ফ","ব","ভ","ম",
-        "য","র","ল","শ","ষ",
-        "স","হ","ড়","ঢ়","য়",
-        "ৎ","ং","ঃ","ঁ"
+        "ঙ", "য","ড","প","ট","চ","জ","হ","গ","ড়","ৃ","ু","ি","ব","্","া","ক","ত","দ","ঁ","ো","ে", "র","ন","স","ম",
+        "ং","্য","ঢ","ফ", "ঠ","ছ","ঝ","ঞ","ঘ", "ঢ়","ঋ","ূ","ী","ভ","র্","অ","খ","থ","ধ","ঃ","ৌ","ৈ","্র","ণ","ষ","শ",
+        "ৎ","আ","ই","ঈ","উ","ঊ","ঐ","ও","ঔ","এ","ঐ","ল","য়","।",",","."
     )
 
-    val eng = ('a'..'z').map { it.toString() }
+    val eng: List<String> = listOf("q","w","e","r","t","y","u","i","o","p","a","s","d","f","g","h","j","k","l","z","x","c","v","b","n","m")
 
-    val engUpper = ('A'..'Z').map { it.toString() }
+    val engUpper = eng.map { it.uppercase() }
 
     /** Common symbols */
     val symbols = listOf(
