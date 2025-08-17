@@ -15,6 +15,8 @@ import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import com.example.keyboard_app.core.constance.Size
+import com.example.keyboard_app.features.keyboard.KeyboardView
 
 class ComposeImeService : InputMethodService(),
     LifecycleOwner,
@@ -66,3 +68,4 @@ class ComposeImeService : InputMethodService(),
 
     private fun handleLifecycleEvent(event: Lifecycle.Event) = lifecycleRegistry.handleLifecycleEvent(event)
 }
+

@@ -33,6 +33,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.keyboard_app.core.constance.Size
 import com.example.keyboard_app.features.keyboard.KeyboardViewModal
@@ -64,7 +65,7 @@ fun KeyView(
 
     Box(
         modifier = modifier
-            .height(Size.keyHeight).width(width)
+            .height(Size.keyHeight).width(width).graphicsLayer { clip = false }
             .pointerInput(Unit) {
                 awaitPointerEventScope {
                     while (true) {
@@ -134,22 +135,22 @@ fun KeyView(
                     style = TextStyle(fontSize = 22.sp)
                 )
         }
-        if (popupScale.value > 0f) {
+        if (isPressed) {
             Box(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
-                    .offset(y = (-70).dp) // popup position above
-                    .graphicsLayer {
-                        scaleX = popupScale.value
-                        scaleY = popupScale.value
-                        alpha = popupScale.value
-                    }
+                    .offset(y = -20.dp)   // ⬅️ sit inside the reserved lane
                     .size(width + 20.dp, Size.keyHeight + 20.dp)
-                    .background(Color.Blue, RoundedCornerShape(10.dp)),
+                    .graphicsLayer {                     // make sure it draws above siblings
+                        shadowElevation = 8f
+                        clip = false
+                    }
+                    .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(10.dp))
+                    .zIndex(10f),                        // ensure on top
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = label ?: "",
+                    text = label.orEmpty(),
                     style = TextStyle(fontSize = 26.sp, color = MaterialTheme.colorScheme.onSurface)
                 )
             }
