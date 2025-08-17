@@ -139,7 +139,7 @@ fun KeyView(
             Box(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
-                    .offset(y = -20.dp)   // ⬅️ sit inside the reserved lane
+                    .offset(y = -Size.keyHeight)   // ⬅️ sit inside the reserved lane
                     .size(width + 20.dp, Size.keyHeight + 20.dp)
                     .graphicsLayer {                     // make sure it draws above siblings
                         shadowElevation = 8f

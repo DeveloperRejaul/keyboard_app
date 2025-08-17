@@ -15,7 +15,7 @@ object ScreenSize {
 
 
 object Size {
-   var totalRow = 4
+   var totalRow = 5
    var keyHeight = 40.dp
    var keyboardVerticalPadding = 4.dp
    var keyboardHorizontalPadding = 6.dp

@@ -53,6 +53,7 @@ fun KeyboardView(keyboardViewModal: KeyboardViewModal = viewModel()) {
             .padding(Size.keyboardHorizontalPadding, Size.keyboardVerticalPadding),
             verticalArrangement = Arrangement.spacedBy(Size.keyboardRowGap)
         ) {
+            Box(modifier = Modifier.fillMaxWidth().height(Size.keyHeight))
             // ROW 01
             Row(
                 modifier = Modifier.fillMaxWidth(),
