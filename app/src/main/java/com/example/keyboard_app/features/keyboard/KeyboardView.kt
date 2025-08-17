@@ -16,6 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -40,11 +42,15 @@ fun KeyboardView(keyboardViewModal: KeyboardViewModal = viewModel()) {
     val row3 = keyboardViewModal.row4.collectAsState()
 
 
-    Box(modifier = Modifier
-        .height(Size.keyboardHeight)
+    Box(modifier = Modifier.height(Size.keyboardHeight)
         .fillMaxWidth()
-        .background(MaterialTheme.colorScheme.primary)) {
-        Column ( modifier = Modifier.fillMaxWidth() .padding(Size.keyboardHorizontalPadding, Size.keyboardVerticalPadding),verticalArrangement = Arrangement.spacedBy(Size.keyboardRowGap)) {
+        .background(MaterialTheme.colorScheme.primary)
+    ) {
+        Column ( modifier = Modifier
+            .fillMaxWidth()
+            .padding(Size.keyboardHorizontalPadding, Size.keyboardVerticalPadding),
+            verticalArrangement = Arrangement.spacedBy(Size.keyboardRowGap)
+        ) {
             // ROW 01
             Row(
                 modifier = Modifier.fillMaxWidth(),

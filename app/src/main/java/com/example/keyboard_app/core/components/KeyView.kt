@@ -3,15 +3,14 @@ package com.example.keyboard_app.core.components
 import android.content.Context
 import android.view.View
 import androidx.compose.animation.Animatable
-import androidx.compose.animation.VectorConverter
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -60,6 +59,9 @@ fun KeyView(
     val scale = remember { Animatable(1f) }
     val color = remember { Animatable(Color.Red) }
 
+    // Popup animation
+    val popupScale = remember { Animatable(0f) }
+
     Box(
         modifier = modifier
             .height(Size.keyHeight).width(width)
@@ -67,12 +69,14 @@ fun KeyView(
                 awaitPointerEventScope {
                     while (true) {
                         awaitFirstDown()
-                        scope.launch { scale.animateTo(0.9f) }
-                        scope.launch { color.animateTo(Color.Green) }
+                        scope.launch { scale.animateTo(0.9f, tween(20)) }
+                        scope.launch { color.animateTo(Color.Red.copy(0.5f),tween(20)) }
+                        scope.launch { popupScale.animateTo(1f, tween(20)) } // popup appear
 
                         waitForUpOrCancellation()
-                        scope.launch {scale.animateTo(1f)}
-                        scope.launch {color.animateTo(Color.Red)}
+                        scope.launch {scale.animateTo(1f,tween(20))}
+                        scope.launch {color.animateTo(Color.Red.copy(1f),tween(20))}
+                        scope.launch { popupScale.animateTo(0f, tween(20)) } // popup disappear
                     }
                 }
             },
@@ -129,6 +133,26 @@ fun KeyView(
                     label,
                     style = TextStyle(fontSize = 22.sp)
                 )
+        }
+        if (popupScale.value > 0f) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .offset(y = (-70).dp) // popup position above
+                    .graphicsLayer {
+                        scaleX = popupScale.value
+                        scaleY = popupScale.value
+                        alpha = popupScale.value
+                    }
+                    .size(width + 20.dp, Size.keyHeight + 20.dp)
+                    .background(Color.Blue, RoundedCornerShape(10.dp)),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = label ?: "",
+                    style = TextStyle(fontSize = 26.sp, color = MaterialTheme.colorScheme.onSurface)
+                )
             }
+        }
     }
 }
