@@ -15,6 +15,7 @@ import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowColumn
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -108,22 +109,6 @@ class MainActivity : ComponentActivity() {
                                 fontSize = 18.sp
                             )
                         }
-                        Box (
-                            modifier = Modifier
-                                .width(ScreenSize.width())
-                                .height(Size.keyboardHeight)
-                                .background(MaterialTheme.colorScheme.primary).graphicsLayer{clip = false},
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .width(ScreenSize.width() - 100.dp)
-                                    .fillMaxHeight().background(Color.Red).graphicsLayer {
-                                        scaleY = 1.3f
-                                    }
-                            )
-                        }
-
                     }
                 }
             }
