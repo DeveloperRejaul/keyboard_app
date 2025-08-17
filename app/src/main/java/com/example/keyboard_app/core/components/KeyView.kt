@@ -2,11 +2,17 @@ package com.example.keyboard_app.core.components
 
 import android.content.Context
 import android.view.View
+import androidx.compose.animation.Animatable
+import androidx.compose.animation.VectorConverter
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -19,6 +25,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -48,53 +56,79 @@ fun KeyView(
     var isPressed by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
+    // Animatable states
+    val scale = remember { Animatable(1f) }
+    val color = remember { Animatable(Color.Red) }
+
     Box(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(3.dp))
+            .height(Size.keyHeight).width(width)
             .pointerInput(Unit) {
                 awaitPointerEventScope {
                     while (true) {
                         awaitFirstDown()
-                        isPressed = true
+                        scope.launch { scale.animateTo(0.9f) }
+                        scope.launch { color.animateTo(Color.Green) }
 
-                        keyboardViewModal.vibrate(view)
-                        keyboardViewModal.sound(context)
-                        var longPressFired = false
+                        waitForUpOrCancellation()
+                        scope.launch {scale.animateTo(1f)}
+                        scope.launch {color.animateTo(Color.Red)}
+                    }
+                }
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        Box(
+            modifier = Modifier
+                .matchParentSize()
+                .graphicsLayer {
+                    scaleX = scale.value
+                    scaleY = scale.value
+                }
+                .background(color.value, RoundedCornerShape(8.dp))
+                .pointerInput(Unit) {
+                    awaitPointerEventScope {
+                        while (true) {
+                            awaitFirstDown()
+                            isPressed = true
+
+                            keyboardViewModal.vibrate(view)
+                            keyboardViewModal.sound(context)
+                            var longPressFired = false
 
 
-                      val job = scope.launch {
-                            delay(500)
-                            if(isPressed && onLongPress != null) {
-                                longPressFired = true
-                                onLongPress()
-                            }
+                            val job = scope.launch {
+                                delay(500)
+                                if (isPressed && onLongPress != null) {
+                                    longPressFired = true
+                                    onLongPress()
+                                }
 
-                            if (onPressInterval != null) {
-                                while (isPressed) {
-                                    onPressInterval()
-                                    keyboardViewModal.vibrate(view)
-                                    keyboardViewModal.sound(context)
-                                    delay(100)
+                                if (onPressInterval != null) {
+                                    while (isPressed) {
+                                        onPressInterval()
+                                        keyboardViewModal.vibrate(view)
+                                        keyboardViewModal.sound(context)
+                                        delay(100)
+                                    }
                                 }
                             }
-                        }
-                        waitForUpOrCancellation()
-                        isPressed = false
-                        job.cancel()
-                        if (!longPressFired || onLongPress == null) {
-                            onClick()
+                            waitForUpOrCancellation()
+                            isPressed = false
+                            job.cancel()
+                            if (!longPressFired || onLongPress == null) {
+                                onClick()
+                            }
                         }
                     }
                 }
+        )
+        when {
+                content != null -> content()
+                label != null -> Text(
+                    label,
+                    style = TextStyle(fontSize = 22.sp)
+                )
             }
-            .height(Size.keyHeight)
-            .width(width),
-        contentAlignment = Alignment.Center
-    ) {
-       if(content != null) {
-           content()
-       } else if (label != null) Text(label, style = TextStyle(
-            fontSize = 22.sp
-        ))
     }
 }
