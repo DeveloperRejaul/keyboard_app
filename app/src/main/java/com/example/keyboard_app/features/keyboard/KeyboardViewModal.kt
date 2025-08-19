@@ -16,7 +16,7 @@ import com.example.keyboard_app.core.constance.Language
 import com.example.keyboard_app.core.utilits.CharMapper
 
 class KeyboardViewModal: ViewModel() {
-    val mapper = CharMapper(Keys.bnAbroMap)
+    val abbroMapper = CharMapper(Keys.bnAbroMap)
 
     private val _crrKeyViewType = MutableStateFlow<KeyViewType>(KeyViewType.ENGLISH_LOAR)
     val crrKeyViewType: StateFlow<KeyViewType> = _crrKeyViewType
@@ -217,7 +217,7 @@ class KeyboardViewModal: ViewModel() {
 
     fun typeObro(ime: ComposeImeService?, input: String) {
         val ic = ime?.currentInputConnection ?: return
-        mapper.applyDecision(ic,  mapper.feed(input))
+        abbroMapper.applyDecision(ic,  input)
     }
 
 }

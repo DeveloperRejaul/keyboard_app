@@ -52,5 +52,4 @@ object Keys {
     val bnNumbers = listOf("০","১","২","৩","৪","৫","৬","৭","৮","৯")
     /** Numbers (0–9) */
     val enNumbers = (0..9).map { it.toString() }
-
 }

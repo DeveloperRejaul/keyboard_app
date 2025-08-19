@@ -10,13 +10,13 @@ class CharMapper(
     private val buffer = StringBuilder()
     private var candidates: List<String> = emptyList()
 
-    fun reset() {
+    private fun reset() {
         buffer.clear()
         candidates = emptyList()
     }
 
     /** Feed one key (as String). Returns what to do next. */
-    fun feed(input: String): MapDecision {
+   private fun feed(input: String): MapDecision {
         val proposed = buffer.toString() + input
 
         // If we already have candidates, check if they still match with proposed; otherwise restart.
@@ -58,7 +58,8 @@ class CharMapper(
     }
 
 
-    fun applyDecision(ic: InputConnection, d: MapDecision) {
+    fun applyDecision(ic: InputConnection, input: String) {
+        val d = feed(input)
         when (d) {
             is MapDecision.NoMatch -> {
                 ic.commitText(d.raw, 1)
