@@ -51,6 +51,7 @@ fun KeyView(
     view: View = LocalView.current,
     onPressInterval: (() -> Unit) ?= null,
     onLongPress: (() -> Unit) ?= null,
+    isPopup: Boolean = true,
     content: (@Composable (() -> Unit))?=null,
 ) {
     var isPressed by remember { mutableStateOf(false) }
@@ -135,24 +136,27 @@ fun KeyView(
                     style = TextStyle(fontSize = 22.sp)
                 )
         }
-        if (isPressed) {
+        if (isPressed && isPopup) {
             Box(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
-                    .offset(y = -Size.keyHeight)   // ⬅️ sit inside the reserved lane
-                    .size(width + 20.dp, Size.keyHeight + 20.dp)
+                    .offset(y = -(Size.keyHeight + 5.dp))   // ⬅️ sit inside the reserved lane
+                    .size(width*2, Size.keyHeight*2)
                     .graphicsLayer {                     // make sure it draws above siblings
                         shadowElevation = 8f
-                        clip = false
                     }
                     .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(10.dp))
                     .zIndex(10f),                        // ensure on top
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = label.orEmpty(),
-                    style = TextStyle(fontSize = 26.sp, color = MaterialTheme.colorScheme.onSurface)
-                )
+                if(content !== null) {
+                    content()
+                }else {
+                    Text(
+                        text = label.orEmpty(),
+                        style = TextStyle(fontSize = 26.sp, color = MaterialTheme.colorScheme.onSurface)
+                    )
+                }
             }
         }
     }

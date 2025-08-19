@@ -25,6 +25,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.keyboard_app.core.components.KeyView
 import com.example.keyboard_app.core.ime.ComposeImeService
 import com.example.keyboard_app.R
+import com.example.keyboard_app.core.constance.CharactersId
 import com.example.keyboard_app.core.constance.KeyViewType
 import com.example.keyboard_app.core.constance.Language
 import com.example.keyboard_app.core.constance.Size
@@ -53,7 +54,29 @@ fun KeyboardView(keyboardViewModal: KeyboardViewModal = viewModel()) {
             .padding(Size.keyboardHorizontalPadding, Size.keyboardVerticalPadding),
             verticalArrangement = Arrangement.spacedBy(Size.keyboardRowGap)
         ) {
-            Box(modifier = Modifier.fillMaxWidth().height(Size.keyHeight))
+            // Top Row
+            Row (modifier = Modifier.fillMaxWidth().height(Size.keyHeight)) {
+                when(crrKeyViewType.value){
+                    KeyViewType.ENGLISH_LOAR, KeyViewType.ENGLISH_UPPER, KeyViewType.ENGLISH_SEMBLE, KeyViewType.ENGLISH_NUMBER_AND_SEMBLE -> {
+                        KeyView(
+                            isPopup = false,
+                            label = "BN",
+                            onClick = {
+                                keyboardViewModal.toggleEnBn(Language.BN)
+                            },
+                        )
+                    }
+                    KeyViewType.BANGLA_SEMBLE,KeyViewType.BANGLA_SCREEN_1,KeyViewType.BANGLA_SCREEN_2,KeyViewType.BANGLA_NUMBER_AND_SEMBLE -> {
+                        KeyView(
+                            isPopup = false,
+                            label = "EN",
+                            onClick = {
+                                keyboardViewModal.toggleEnBn(Language.EN)
+                            },
+                        )
+                    }
+                }
+            }
             // ROW 01
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -76,12 +99,55 @@ fun KeyboardView(keyboardViewModal: KeyboardViewModal = viewModel()) {
                 horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
             ){
                 row2.value.forEachIndexed { index, value ->
-                    KeyView(
-                        label = row2.value[index] ,
-                        onClick = {
-                            keyboardViewModal.type(ime , row2.value[index])
+                    val mainValue = row2.value[index];
+                    when(mainValue){
+                        CharactersId.REE -> {
+                            KeyView(
+                                onClick = {
+                                    keyboardViewModal.type(ime , row2.value[index])
+                                }
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.bn_ree_kar),
+                                    contentDescription = "ree kar icon",
+                                    modifier = Modifier.size(15.dp)
+                                )
+                            }
                         }
-                    )
+                        CharactersId.ROSHO_KAR -> {
+                            KeyView(
+                                onClick = {
+                                    keyboardViewModal.type(ime, row2.value[index])
+                                }
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.rosho_kar),
+                                    contentDescription = "ree kar icon",
+                                    modifier = Modifier.size(10.dp)
+                                )
+                            }
+                        }
+                        CharactersId.ROSHI_KAR -> {
+                            KeyView(
+                                onClick = {
+                                    keyboardViewModal.type(ime, row2.value[index])
+                                }
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.bn_roshi_kar),
+                                    contentDescription = "ree kar icon",
+                                    modifier = Modifier.size(15.dp)
+                                )
+                            }
+
+                        }
+                        else -> KeyView(
+                            label = row2.value[index] ,
+                            onClick = {
+                                keyboardViewModal.type(ime , row2.value[index])
+                            }
+                        )
+                    }
                 }
             }
             // ROW 03
@@ -91,6 +157,7 @@ fun KeyboardView(keyboardViewModal: KeyboardViewModal = viewModel()) {
                 verticalAlignment = Alignment.CenterVertically
             ){
                 KeyView(
+                    isPopup = false,
                     onClick = {
                         keyboardViewModal.arrowKey()
                     },
@@ -132,6 +199,7 @@ fun KeyboardView(keyboardViewModal: KeyboardViewModal = viewModel()) {
                 }
 
                 KeyView(
+                    isPopup = false,
                     onClick = {
                         keyboardViewModal.remove(ime)
                     },
@@ -155,6 +223,7 @@ fun KeyboardView(keyboardViewModal: KeyboardViewModal = viewModel()) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 KeyView(
+                    isPopup = false,
                     onClick = {
                         keyboardViewModal.numKey()
                     },
@@ -202,6 +271,7 @@ fun KeyboardView(keyboardViewModal: KeyboardViewModal = viewModel()) {
                 )
 
                 KeyView(
+                    isPopup = false,
                     label = "Space",
                     onClick = {
                         keyboardViewModal.type(ime , " ")
@@ -212,23 +282,23 @@ fun KeyboardView(keyboardViewModal: KeyboardViewModal = viewModel()) {
                 when(crrKeyViewType.value){
                     KeyViewType.ENGLISH_LOAR, KeyViewType.ENGLISH_UPPER, KeyViewType.ENGLISH_SEMBLE, KeyViewType.ENGLISH_NUMBER_AND_SEMBLE -> {
                         KeyView(
-                            label = "BN",
+                            label = ".",
                             onClick = {
-                                keyboardViewModal.toggleEnBn(Language.BN)
+                                keyboardViewModal.type(ime , ".")
                             },
                         )
                     }
                     KeyViewType.BANGLA_SEMBLE,KeyViewType.BANGLA_SCREEN_1,KeyViewType.BANGLA_SCREEN_2,KeyViewType.BANGLA_NUMBER_AND_SEMBLE -> {
                         KeyView(
-                            label = "EN",
+                            label = "।",
                             onClick = {
-                                keyboardViewModal.toggleEnBn(Language.EN)
+                                keyboardViewModal.type(ime , "।")
                             },
                         )
                     }
                 }
-
                 KeyView(
+                    isPopup = false,
                     onClick = {
                         keyboardViewModal.enter(ime)
                     },

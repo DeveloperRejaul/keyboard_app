@@ -38,6 +38,8 @@ class KeyboardViewModal: ViewModel() {
     val row3:StateFlow<List<String>> = _row3
     val row4:StateFlow<List<String>> = _row4
 
+
+
     fun arrowKey() {
         when(_crrKeyViewType.value){
             KeyViewType.ENGLISH_UPPER -> {
@@ -119,8 +121,13 @@ class KeyboardViewModal: ViewModel() {
     }
 
 
+
+
     fun type (ime: ComposeImeService?, char: String) {
-        ime?.currentInputConnection?.commitText(char,1)
+        when(crrKeyViewType.value) {
+            KeyViewType.BANGLA_SCREEN_1, KeyViewType.BANGLA_SCREEN_2 -> typeBn(ime, char)
+            else -> ime?.currentInputConnection?.commitText(char,1)
+        }
     }
 
     fun remove (ime: ComposeImeService?) {
@@ -198,6 +205,15 @@ class KeyboardViewModal: ViewModel() {
         _row3.value = Keys.symbols.slice(27..36)
         _row4.value = Keys.symbols.slice(37..43)
         _crrKeyViewType.value = KeyViewType.BANGLA_SEMBLE
+    }
+
+    private fun typeBn (ime: ComposeImeService?, char: String) {
+        val displayValue = Keys.bnMap[char];
+        if(displayValue !== null) {
+            ime?.currentInputConnection?.commitText(displayValue,1)
+            return
+        }
+        ime?.currentInputConnection?.commitText(char,1)
     }
 
 }
