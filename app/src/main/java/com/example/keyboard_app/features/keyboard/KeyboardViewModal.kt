@@ -13,8 +13,11 @@ import android.view.View
 import com.example.keyboard_app.core.constance.KeyViewType
 import com.example.keyboard_app.core.constance.Keys
 import com.example.keyboard_app.core.constance.Language
+import com.example.keyboard_app.core.utilits.CharMapper
 
 class KeyboardViewModal: ViewModel() {
+    val mapper = CharMapper(Keys.bnAbroMap)
+
     private val _crrKeyViewType = MutableStateFlow<KeyViewType>(KeyViewType.ENGLISH_LOAR)
     val crrKeyViewType: StateFlow<KeyViewType> = _crrKeyViewType
     private val _prvKeyViewType = MutableStateFlow<KeyViewType>(KeyViewType.ENGLISH_NUMBER_AND_SEMBLE)
@@ -37,8 +40,6 @@ class KeyboardViewModal: ViewModel() {
     val row2:StateFlow<List<String>> = _row2
     val row3:StateFlow<List<String>> = _row3
     val row4:StateFlow<List<String>> = _row4
-
-
 
     fun arrowKey() {
         when(_crrKeyViewType.value){
@@ -71,7 +72,6 @@ class KeyboardViewModal: ViewModel() {
                 }
             }
     }
-
 
     fun numKey() {
         when (_crrKeyViewType.value) {
@@ -120,13 +120,11 @@ class KeyboardViewModal: ViewModel() {
         }
     }
 
-
-
-
     fun type (ime: ComposeImeService?, char: String) {
         when(crrKeyViewType.value) {
             KeyViewType.BANGLA_SCREEN_1, KeyViewType.BANGLA_SCREEN_2 -> typeBn(ime, char)
             else -> ime?.currentInputConnection?.commitText(char,1)
+            //else -> typeObro(ime, char)
         }
     }
 
@@ -214,6 +212,12 @@ class KeyboardViewModal: ViewModel() {
             return
         }
         ime?.currentInputConnection?.commitText(char,1)
+    }
+
+
+    fun typeObro(ime: ComposeImeService?, input: String) {
+        val ic = ime?.currentInputConnection ?: return
+        mapper.applyDecision(ic,  mapper.feed(input))
     }
 
 }

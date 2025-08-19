@@ -25,6 +25,7 @@ import com.example.keyboard_app.core.ime.ComposeImeService
 import com.example.keyboard_app.R
 import com.example.keyboard_app.core.constance.CharactersId
 import com.example.keyboard_app.core.constance.KeyViewType
+import com.example.keyboard_app.core.constance.Keys
 import com.example.keyboard_app.core.constance.Language
 import com.example.keyboard_app.core.constance.Size
 
@@ -82,12 +83,43 @@ fun KeyboardView(keyboardViewModal: KeyboardViewModal = viewModel()) {
                 verticalAlignment = Alignment.CenterVertically
             ){
                 row1.value.forEachIndexed { index, value ->
-                    KeyView(
-                        label = row1.value[index],
-                        onClick = {
-                            keyboardViewModal.type(ime , row1.value[index])
+                    val mainValue = row1.value[index];
+                    when(mainValue) {
+                        CharactersId.ONOSKAR -> {
+                            KeyView(
+                                onClick = {
+                                    keyboardViewModal.type(ime, CharactersId.ONOSKAR)
+                                }
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.bn_onoskar),
+                                    contentDescription = "ree kar icon",
+                                    modifier = Modifier.size(15.dp)
+                                )
+                            }
                         }
-                    )
+                        CharactersId.JOPOLA -> {
+                            KeyView(
+                                onClick = {
+                                    keyboardViewModal.type(ime, CharactersId.JOPOLA)
+                                }
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.bn_jopola),
+                                    contentDescription = "ree kar icon",
+                                    modifier = Modifier.size(15.dp)
+                                )
+                            }
+                        }
+                        else -> {
+                            KeyView(
+                                label = row1.value[index],
+                                onClick = {
+                                    keyboardViewModal.type(ime , row1.value[index])
+                                }
+                            )
+                        }
+                    }
                 }
             }
             // ROW 02
@@ -102,7 +134,7 @@ fun KeyboardView(keyboardViewModal: KeyboardViewModal = viewModel()) {
                         CharactersId.REE -> {
                             KeyView(
                                 onClick = {
-                                    keyboardViewModal.type(ime , row2.value[index])
+                                    keyboardViewModal.type(ime , CharactersId.REE)
                                 }
                             ) {
                                 Icon(
@@ -115,7 +147,7 @@ fun KeyboardView(keyboardViewModal: KeyboardViewModal = viewModel()) {
                         CharactersId.ROSHO_KAR -> {
                             KeyView(
                                 onClick = {
-                                    keyboardViewModal.type(ime, row2.value[index])
+                                    keyboardViewModal.type(ime, CharactersId.ROSHO_KAR)
                                 }
                             ) {
                                 Icon(
@@ -128,7 +160,7 @@ fun KeyboardView(keyboardViewModal: KeyboardViewModal = viewModel()) {
                         CharactersId.ROSHI_KAR -> {
                             KeyView(
                                 onClick = {
-                                    keyboardViewModal.type(ime, row2.value[index])
+                                    keyboardViewModal.type(ime, CharactersId.ROSHI_KAR)
                                 }
                             ) {
                                 Icon(
@@ -137,7 +169,71 @@ fun KeyboardView(keyboardViewModal: KeyboardViewModal = viewModel()) {
                                     modifier = Modifier.size(15.dp)
                                 )
                             }
-
+                        }
+                        CharactersId.REF -> {
+                            KeyView(
+                                onClick = {
+                                    keyboardViewModal.type(ime,  CharactersId.REF)
+                                }
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.bn_ref),
+                                    contentDescription = "ree kar icon",
+                                    modifier = Modifier.size(15.dp)
+                                )
+                            }
+                        }
+                        CharactersId.AKAR -> {
+                            KeyView(
+                                onClick = {
+                                    keyboardViewModal.type(ime,  CharactersId.AKAR)
+                                }
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.bn_akar),
+                                    contentDescription = "ree kar icon",
+                                    modifier = Modifier.size(15.dp)
+                                )
+                            }
+                        }
+                        CharactersId.JOKTTO -> {
+                            KeyView(
+                                onClick = {
+                                    keyboardViewModal.type(ime,  CharactersId.JOKTTO)
+                                }
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.bn_songjogtu_kar),
+                                    contentDescription = "ree kar icon",
+                                    modifier = Modifier.size(15.dp)
+                                )
+                            }
+                        }
+                        CharactersId.DIRGO_KAR -> {
+                            KeyView(
+                                onClick = {
+                                    keyboardViewModal.type(ime,  CharactersId.DIRGO_KAR)
+                                }
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.bn_dirgoo_kar),
+                                    contentDescription = "ree kar icon",
+                                    modifier = Modifier.size(15.dp)
+                                )
+                            }
+                        }
+                        CharactersId.DIRGI_KAR -> {
+                            KeyView(
+                                onClick = {
+                                    keyboardViewModal.type(ime, CharactersId.DIRGI_KAR )
+                                }
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.bn_dirgi_kar),
+                                    contentDescription = "ree kar icon",
+                                    modifier = Modifier.size(15.dp)
+                                )
+                            }
                         }
                         else -> KeyView(
                             label = row2.value[index] ,
@@ -188,12 +284,108 @@ fun KeyboardView(keyboardViewModal: KeyboardViewModal = viewModel()) {
 
                 }
                 row3.value.forEachIndexed { index, value ->
-                    KeyView(
-                        label = row3.value[index],
-                        onClick = {
-                            keyboardViewModal.type(ime , row3.value[index])
+                    val mainValue = row3.value[index];
+                    when(mainValue) {
+                        CharactersId.CHANDRO_BINDRO -> {
+                            KeyView(
+                                onClick = {
+                                    keyboardViewModal.type(ime, CharactersId.CHANDRO_BINDRO)
+                                }
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.bn_chandra_bindra),
+                                    contentDescription = "ree kar icon",
+                                    modifier = Modifier.size(15.dp)
+                                )
+                            }
                         }
-                    )
+                        CharactersId.O_KAR -> {
+                            KeyView(
+                                onClick = {
+                                    keyboardViewModal.type(ime,  CharactersId.O_KAR)
+                                }
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.bn_o_kar),
+                                    contentDescription = "ree kar icon",
+                                    modifier = Modifier.size(15.dp)
+                                )
+                            }
+                        }
+                        CharactersId.A_KAR -> {
+                            KeyView(
+                                onClick = {
+                                    keyboardViewModal.type(ime, CharactersId.A_KAR)
+                                }
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.bn_a_kar),
+                                    contentDescription = "ree kar icon",
+                                    modifier = Modifier.size(15.dp)
+                                )
+                            }
+                        }
+                        CharactersId.BISHORHO -> {
+                            KeyView(
+                                onClick = {
+                                    keyboardViewModal.type(ime, CharactersId.BISHORHO)
+                                }
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.bn_hondotto),
+                                    contentDescription = "ree kar icon",
+                                    modifier = Modifier.size(15.dp)
+                                )
+                            }
+                        }
+                        CharactersId.AO_KAR -> {
+                            KeyView(
+                                onClick = {
+                                    keyboardViewModal.type(ime, CharactersId.AO_KAR)
+                                }
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.bn_ooi_kar),
+                                    contentDescription = "ree kar icon",
+                                    modifier = Modifier.size(15.dp)
+                                )
+                            }
+                        }
+                        CharactersId.OI_KAR -> {
+                            KeyView(
+                                onClick = {
+                                    keyboardViewModal.type(ime,  CharactersId.OI_KAR )
+                                }
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.bn_oi_kar),
+                                    contentDescription = "ree kar icon",
+                                    modifier = Modifier.size(15.dp)
+                                )
+                            }
+                        }
+                        CharactersId.TROPOLA -> {
+                            KeyView(
+                                onClick = {
+                                    keyboardViewModal.type(ime, CharactersId.TROPOLA )
+                                }
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.bn_tropola),
+                                    contentDescription = "ree kar icon",
+                                    modifier = Modifier.size(15.dp)
+                                )
+                            }
+                        }
+                        else -> {
+                            KeyView(
+                                label = row3.value[index],
+                                onClick = {
+                                    keyboardViewModal.type(ime , row3.value[index])
+                                }
+                            )
+                        }
+                    }
                 }
 
                 KeyView(
