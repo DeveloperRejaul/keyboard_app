@@ -66,7 +66,7 @@ fun KeyView(
 
     Box(
         modifier = modifier
-            .height(Size.keyHeight).width(width).graphicsLayer { clip = false }
+            .height(Size.keyHeight).width(width)
             .pointerInput(Unit) {
                 awaitPointerEventScope {
                     while (true) {
